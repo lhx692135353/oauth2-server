@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: false
+      uri: mongodb://10.2.7.61:27017/oauth2
+      #username: admin
+      #password: passowrd

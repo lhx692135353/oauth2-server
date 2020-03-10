@@ -1,0 +1,20 @@
+spring:
+  redis:
+    port: 6379
+    host: 10.2.7.61
+    database: 0
+    #password: Vwm@2018
+    ssl: false
+    jedis:
+      pool:
+        max-active: 1000
+        max-idle: 100
+        min-idle: 0
+#    sentinel:
+#      master: mymaster
+#      nodes: 10.2.7.178:26379,10.2.7.178:26379,10.2.7.178:26379
+key:
+  visit-id-name: 'oauth2:visit:'
+  code: 'oauth2:code:'
+  refresh-token: 'oauth2:refresh-token:'
+  token: 'oauth2:token:'

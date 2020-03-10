@@ -1,0 +1,67 @@
+<!doctype html>
+
+<!--注意：引入thymeleaf的名称空间-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:;base64,=">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>授权页面</title>
+    <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/static/js/ajax_new.js"></script>
+    <script>
+        function login() {
+            var userName = document.getElementById("userName").value;
+            var password = document.getElementById("password").value;
+            var visitId = document.getElementById("visitId").value;
+            if (userName == '' || password == '') {
+                alert("用户名或密码不能为空")
+                return
+            }
+            if (visitId == '') {
+                alert("访客id丢失请重新进入")
+                return
+            }
+            var bean = "{'user_name':" + userName + ", 'user_password': " + password + "}"
+            var req = {json: bean, visitId: visitId}
+            var msg = useajax("/auth/login", req);
+            console.log(msg)
+            if (msg.status == 200) {
+                var data = msg.attachment
+                var redirectURL = data.redirect_uri + "&client_id=" + data.client_id + "&response_type=" + data.response_type + "&state=" + data.state + "&code=" + data.code
+                window.location.href = redirectURL;
+            } else {
+                alert("账号密码错误")
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <form class="form-horizontal">
+                <span class="heading">用户登录</span>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="userName" placeholder="用户名或电子邮件">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" id="password" placeholder="密　码">
+                    <i class="fa fa-lock"></i>
+                    <a href="#" class="fa fa-question-circle"></a>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" th:value="${visit_id}" id="visitId" class="form-control">
+                    <button type="button" class="btn btn-default" onclick="login()">登录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

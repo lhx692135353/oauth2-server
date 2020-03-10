@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <include resource="org.springframework.boot.logging.logback.defaults.xml"/>
+    <springProperty scope="context" name="APP_Name" source="spring.application.name"/>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <contextName>${APP_Name}</contextName>
+    <property name="charset" value="UTF-8"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- You can override this to have a custom pattern -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(%X{duration:-}) %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%(%d{yyyy-MM-dd HH:mm:ss.SSS}) %(${LOG_LEVEL_PATTERN:-%5p}) %(${PID:- }) %X{duration:-} --- %([%15.15t]) %(%-40.40logger{39}) %(:) %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <!-- <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/logs/${APP_Name}.logFile.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/logs/${APP_Name}.logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${charset}</charset>
+        </encoder>
+    </appender> -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${charset}</charset>
+        </encoder>
+    </appender>
+    <appender name="STDOUT-JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder charset="${charset}" class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"appname":"${APP_Name}"}</customFields>
+            <includeCallerData>true</includeCallerData>
+            <timestampPattern>yyyy-MM-dd HH:mm:ss.SSS</timestampPattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+    <logger name="org.springframework.data.mongodb.core" level="DEBUG"/>
+    <!--</logger>-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="STDOUT-JSON"/>-->
+        <!--<appender-ref ref="FILE"/>-->
+    </root>
+</configuration>
