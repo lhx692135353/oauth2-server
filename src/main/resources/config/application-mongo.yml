@@ -2,6 +2,6 @@ spring:
   data:
     mongodb:
       auto-index-creation: false
-      uri: mongodb://10.2.7.61:27017/oauth2
+      uri: mongodb://10.2.6.220:27017/oauth2
       #username: admin
       #password: passowrd

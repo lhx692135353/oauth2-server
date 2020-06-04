@@ -1,6 +1,5 @@
 package com.vwmobvoi.oauth2.oauth2server.config;
 
-import com.vwmobvoi.oauth2.oauth2server.service.PartnerUserService;
 import com.vwmobvoi.oauth2.oauth2server.service.UserAuthService;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
